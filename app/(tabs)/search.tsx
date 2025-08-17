@@ -70,8 +70,8 @@ const Search = () => {
                 contentContainerStyle={{ paddingBottom: 100 }}
                 ListHeaderComponent={
                     <>
-                        <View className="w-full flex-row justify-center mt-20 items-center">
-                            <Image source={icons.logo} className="w-12 h-10" />
+                        <View className="w-full flex-row justify-center mt-24 items-center">
+                            <Image source={icons.logo2} className="w-16 h-16 mb-4" />
                         </View>
 
                         <View className="my-5">
