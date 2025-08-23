@@ -12,6 +12,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "@/constants/icons";
 import useFetch from "@/services/useFetch";
 import { fetchMovieDetails } from "@/services/api";
+import {useUser} from "@/services/useUser";
+import LikeButton from "@/components/LikeButton";
 
 interface MovieInfoProps {
     label: string;
@@ -30,6 +32,7 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 const MovieDetails = () => {
     const router = useRouter();
     const { id } = useLocalSearchParams();
+    const { user } = useUser();
 
     const { data: movie, loading } = useFetch(() =>
         fetchMovieDetails(id as string));
@@ -40,7 +43,7 @@ const MovieDetails = () => {
                 <ActivityIndicator />
             </SafeAreaView>
         );
-
+    console.log( "Movie and user info:"+ movie?.id, user?.$id);
     return (
         <View className="bg-primary flex-1">
             <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -62,8 +65,22 @@ const MovieDetails = () => {
                     </TouchableOpacity>
                 </View>
 
+                <View className="flex flex-row relative px-5 mt-5">
+                    <Text className="items-start text-white font-bold text-xl ">{movie?.title}</Text>
+
+                    {movie && (
+                        <LikeButton
+                            query={user?.$id as string}
+                            movie={{
+                                movie_id: movie.id.toString(),
+                                title: movie.title,
+                                poster_path: movie.poster_path,
+                            }}
+                        />
+                    )}
+
+                </View>
                 <View className="flex-col items-start justify-center mt-5 px-5">
-                    <Text className="text-white font-bold text-xl">{movie?.title}</Text>
                     <View className="flex-row items-center gap-x-1 mt-2">
                         <Text className="text-light-200 text-sm">
                             {movie?.release_date?.split("-")[0]} •

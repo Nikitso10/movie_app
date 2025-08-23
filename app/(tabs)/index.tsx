@@ -4,13 +4,14 @@ import {
     ActivityIndicator,
     ScrollView,
     Image,
-    FlatList,
+    FlatList, TouchableOpacity,
 } from "react-native";
-import { useRouter } from "expo-router";
+import {useRouter} from "expo-router";
 
 import useFetch from "@/services/useFetch";
 import { fetchMovies } from "@/services/api";
 import { getTrendingMovies } from "@/services/appwrite";
+import {useUser} from "@/services/useUser";
 
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
@@ -18,9 +19,14 @@ import { images } from "@/constants/images";
 import SearchBar from "@/components/SearchBar";
 import MovieCard from "@/components/MovieCard";
 import TrendingCard from "@/components/TrendingCard";
+import React, {useEffect, useState} from "react";
+
+
 
 const Index = () => {
     const router = useRouter();
+    const { user } = useUser();
+
 
     const {
         data: trendingMovies,
@@ -34,6 +40,41 @@ const Index = () => {
         error: moviesError,
     } = useFetch(() => fetchMovies({ query: "" }));
 
+
+    function SelectLink ()  {
+        const router = useRouter();
+        const { user, authChecked } = useUser();
+        const [ selected, setSelected ] = useState<"../login" | "../profile">("../login" );
+        const [ linkName, setLinkName ] = useState("Login");
+
+        useEffect(() => {
+
+            if (!authChecked && user == null) {
+                setSelected( "../login")
+                setLinkName("Login")
+            }
+            if (authChecked && user !== null) {
+                setSelected( "../profile")
+                setLinkName("Profile")
+            } else {
+                setSelected( "../login")
+                setLinkName("Login")
+            }
+
+        }, [user, authChecked])
+
+        return (
+            <>
+                <TouchableOpacity
+                    onPress={() => router.push(selected)} >
+                    <Text className="mx-auto text-white font-bold mt-5 mb-3">{linkName}</Text>
+                </TouchableOpacity>
+            </>
+        )
+    }
+
+
+    console.log('Index user is: ', user)
     return (
         <View className="flex-1 bg-primary">
             <Image
@@ -47,7 +88,14 @@ const Index = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
             >
+
                 <Image source={icons.logo2} className="w-16 h-16 mt-16 mb-5 mx-auto" />
+
+                <SelectLink />
+                {/*<TouchableOpacity*/}
+                {/*    onPress={() => router.push("../login")} >*/}
+                {/*    <Text className="mx-auto text-white font-bold mt-5 mb-3">Go to Login</Text>*/}
+                {/*</TouchableOpacity>*/}
 
                 {moviesLoading || trendingLoading ? (
                     <ActivityIndicator

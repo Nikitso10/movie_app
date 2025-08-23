@@ -1,9 +1,11 @@
 import {View, Text, ImageBackground, Image} from 'react-native';
-import React from 'react';
-import {Tabs} from "expo-router";
+import React, {useEffect, useState} from 'react';
+import { Tabs } from "expo-router";
 
 import { images } from "@/constants/images";
 import {icons} from "@/constants/icons";
+import {useUser} from "@/services/useUser";
+
 
 const TabIcon = ({ focused, icon, title } : any) => {
     if (focused) {
@@ -26,6 +28,29 @@ const TabIcon = ({ focused, icon, title } : any) => {
 }
 
 const _Layout = () => {
+
+
+    function LoggedUser () {
+        const [loggedIn, setLoggedIn] = useState(false);
+        const {user, authChecked} = useUser();
+
+
+        useEffect(() => {
+
+            if (!authChecked && user == null) {
+                setLoggedIn(false)
+            }
+            if (authChecked && user !== null) {
+                setLoggedIn(true)
+            } else {
+                setLoggedIn(false)
+            }
+
+        }, [user, authChecked])
+
+        return loggedIn;
+    }
+
     return (
         <Tabs screenOptions={{
             tabBarShowLabel: false,
@@ -62,6 +87,7 @@ const _Layout = () => {
             }}
             />
             <Tabs.Screen
+
                 name="search"
                 options={{
                     headerShown: false,
@@ -75,20 +101,22 @@ const _Layout = () => {
                     )
                 }}
             />
-            <Tabs.Screen
-                name="saved"
-                options={{
-                    headerShown: false,
-                    title: 'Saved',
-                    tabBarIcon: ({ focused }) => (
-                        <TabIcon
-                            focused={focused}
-                            icon={icons.save}
-                            title="Saved"
-                        />
-                    )
-                }}
-            />
+            <Tabs.Protected guard={LoggedUser()}>
+                <Tabs.Screen
+                    name="saved"
+                    options={{
+                        headerShown: false,
+                        title: 'Saved',
+                        tabBarIcon: ({ focused }) => (
+                            <TabIcon
+                                focused={focused}
+                                icon={icons.save}
+                                title="Saved"
+                            />
+                        )
+                    }}
+                />
+            </Tabs.Protected>
             <Tabs.Screen
                 name="profile"
                 options={{
@@ -103,7 +131,9 @@ const _Layout = () => {
                     )
                 }}
             />
+
         </Tabs>
+
     )
 }
 export default _Layout
