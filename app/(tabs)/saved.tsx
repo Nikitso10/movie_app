@@ -1,16 +1,100 @@
 import { icons } from "@/constants/icons";
-import { View, Text, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {View, Text, Image, ActivityIndicator, FlatList} from "react-native";
+
+import {images} from "@/constants/images";
+import React, {useEffect} from "react";
+import {useUser} from "@/services/useUser";
+import {useLocalSearchParams, useRouter} from "expo-router";
+
+import useFetch from "@/services/useFetch";
+
+import SavedMovieCard from "@/components/SavedMovieCard";
+import {getSavedMovies} from "@/services/appwrite";
 
 const Saved = () => {
+    const { user, logout, authChecked } = useUser()
+    const router = useRouter();
+
+    console.log('Saved user is: ', user)
+    const query :string = user?.$id
+
+    const {
+            data: savedmovies = [],
+            loading,
+            error,
+            refetch: loadMovies,
+            reset,
+        } = useFetch(() => getSavedMovies( query), Boolean(user!==null && authChecked) );
+
+
+    const splitName = user?.email.split("@")[0]
+
+
     return (
-        <SafeAreaView className="bg-primary flex-1 px-10">
-            <View className="flex justify-center items-center flex-1 flex-col gap-5">
-                <Image source={icons.save} className="size-10" tintColor="#fff" />
-                <Text className="text-gray-500 text-base">Save</Text>
-            </View>
-        </SafeAreaView>
-    );
-};
+        <View className="flex-1 bg-primary">
+            <Image
+                source={images.bg}
+                className="absolute w-full z-0"
+                resizeMode="cover"
+            />
+
+            <FlatList
+                className="px-5"
+                data={savedmovies as SavedMovie[]}
+                keyExtractor={(item) => item.movie_id.toString()}
+                renderItem={({ item }) => <SavedMovieCard {...item} />}
+                numColumns={3}
+                columnWrapperStyle={{
+                    justifyContent: "center",
+                    gap: 16,
+                    marginVertical: 16,
+                }}
+                contentContainerStyle={{ paddingBottom: 100 }}
+                ListHeaderComponent={
+                    <>
+                        <View className="w-full flex-row justify-center mt-24 items-center">
+                            <Image source={icons.logo2} className="w-16 h-16 mb-4" />
+                        </View>
+
+                        {loading && (
+                            <ActivityIndicator
+                                size="large"
+                                color="#0000ff"
+                                className="my-3"
+                            />
+                        )}
+
+                        {error && (
+                            <Text className="text-red-500 px-5 my-3">
+                                Error: {error.message}
+                            </Text>
+                        )}
+
+                        {!loading &&
+                            !error  &&
+                            savedmovies?.length! > 0 && (
+                                <Text className="text-xl text-white font-bold">
+                                    Your saved movies,
+                                    <Text className="text-accent"> {splitName }</Text>
+                                </Text>
+                            )}
+                    </>
+                }
+
+                ListEmptyComponent={
+                    !loading && !error ? (
+                        <View className="mt-10 px-5">
+                            <Text className="text-center text-gray-500">
+                                {user !== null
+                                    ? "No saved movies found"
+                                    : "Save a movie"}
+                            </Text>
+                        </View>
+                    ) : null
+                }
+            />
+        </View>
+    )
+}
 
 export default Saved;

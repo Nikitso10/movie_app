@@ -75,6 +75,7 @@ const MovieDetails = () => {
                                 movie_id: movie.id.toString(),
                                 title: movie.title,
                                 poster_path: movie.poster_path,
+
                             }}
                         />
                     )}

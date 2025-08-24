@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import {checkLikedMovie, updateSavedMovie} from "@/services/appwrite";
 import {icons} from "@/constants/icons";
+import ShowToast from "@/components/ShowToast";
 
 
 interface Props {
@@ -55,7 +56,13 @@ const LikeButton = ({ onPress, query, movie } : Props)=> {
     }
 
     return (
-        <TouchableOpacity onPress={toggleLike} disabled={loading} className="absolute right-5">
+        <TouchableOpacity
+            // onPress={() => {
+            //     toggleLike();
+            //     ShowToast("Saved movie ", movie?.title); }}
+            onPress={toggleLike}
+            disabled={loading} className="absolute right-5">
+
             {loading ? (
                 <ActivityIndicator color="#ff4444" />
             ) : (

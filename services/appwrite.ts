@@ -73,13 +73,33 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
                 Query.equal("movie_id", savemovie.movie_id),
                 Query.equal("user_id", userid)])
         ]);
+        console.log("results documentId is ", result);
+        console.log("DB:", DATABASE_ID);
+        console.log("Saved Collection:", SAVED_COLLECTION_ID);
+
+        if (result.documents.length === 0) {
+            console.log("No documents found to delete.");
+            return;
+        }
+
         // if already saved, delete -> Unlike
         if (result.documents.length > 0) {
+            const doc = result.documents[0];
+            const docId = doc.$id;
+            if (!docId) {
+                console.error("Document has no $id:", doc);
+                return;
+            }
+
+            console.log("delete args:", DATABASE_ID, SAVED_COLLECTION_ID, docId);
+            console.log("delete args:", DATABASE_ID, SAVED_COLLECTION_ID, result.documents[0]?.$id);
+
             await database.deleteDocument(
                 '<DATABASE_ID>', // databaseId
                 '<SAVED_COLLECTION_ID>', // collectionId
-                result.documents[0].$id // documentId
+                docId // documentId
             );
+
         }
          else {
             // create new document to save movie -> like
@@ -90,6 +110,7 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
                 poster_url: `https://image.tmdb.org/t/p/w500${savemovie.poster_path}`,
                 });
             }
+        console.log("create document Id is ", ID);
         } catch (error) {
             console.error("Error updating saved movie:", error);
             throw error;
@@ -108,3 +129,20 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
             return false;
         }
     };
+
+    export const getSavedMovies = async (query: string): Promise<
+        SavedMovie[]
+    > => {
+        try {
+            const result = await database.listDocuments(DATABASE_ID, SAVED_COLLECTION_ID, [
+                Query.limit(5),
+                Query.equal('user_id', query),
+            ]);
+
+            return result.documents as unknown as SavedMovie[];
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
