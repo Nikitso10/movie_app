@@ -33,7 +33,7 @@ const SignUp = () => {
                 />
                 <View className="items-center">
                     <View >
-                        <Image source={icons.logo2} className="w-16 h-16 mt-16 mb-5 mx-auto" />
+                        <Image source={images.movieflexlogo} className="w-16 h-16 mt-16 mb-5 mx-auto" />
                         <Text className="mt-10 text-center text-xl font-bold tracking-tight text-white">
                             Create an account
                         </Text>

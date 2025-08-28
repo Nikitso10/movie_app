@@ -1,4 +1,4 @@
-import {Account, Client, Databases, ID, Query} from "react-native-appwrite";
+import {Account, Client, Databases, ID, Query, Avatars } from "react-native-appwrite";
 // Import type models for Appwrite
 //import { type Models } from 'appwrite';
 // define database variables
@@ -11,6 +11,8 @@ export const client = new Client()
     .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!);
 // export a new instance account
 export const account = new Account(client);
+// Avatars
+const avatars = new Avatars(client);
 // database instance
 const database = new Databases(client);
 
@@ -55,7 +57,7 @@ export const getTrendingMovies = async (): Promise<
 > => {
     try {
         const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
-            Query.limit(5),
+            Query.limit(9),
             Query.orderDesc("count"),
         ]);
 
@@ -135,7 +137,6 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
     > => {
         try {
             const result = await database.listDocuments(DATABASE_ID, SAVED_COLLECTION_ID, [
-                Query.limit(5),
                 Query.equal('user_id', query),
             ]);
 
@@ -146,3 +147,40 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
         }
     };
 
+    export const updateEmail = async ( email: string, password: string) => {
+        try {
+            const result = await account.updateEmail(
+                email, // email
+                password // password
+            );
+            return result;
+        } catch (error) {
+            console.error("Error updating email:", error);
+            throw error;
+        }
+    };
+
+    export const updatePassword = async ( newpass: string, oldpass?: string) => {
+        try {
+            const result = await account.updatePassword(
+                newpass, // password
+                oldpass // oldPassword (optional)
+            );
+            return result;
+        } catch (error) {
+            console.error("Error updating password:", error);
+            throw error;
+        }
+    };
+
+    export const updateName = async ( newname: string) => {
+        try {
+            const result = await account.updateName(
+                newname // name
+            );
+            return result;
+        } catch (error) {
+            console.error("Error updating name:", error);
+            throw error;
+        }
+    };

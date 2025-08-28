@@ -5,7 +5,7 @@ import { icons } from "@/constants/icons";
 
 const SavedMovieCard= ({
                        movie_id,
-                       poster_url,
+                       poster_path,
                        title,
                        user_id,
                    }: SavedMovie) => {
@@ -16,8 +16,8 @@ const SavedMovieCard= ({
             <TouchableOpacity className="w-[30%]">
                 <Image
                     source={{
-                        uri: poster_url
-                            ? `https://image.tmdb.org/t/p/w500${poster_url}`
+                        uri: poster_path
+                            ? `https://image.tmdb.org/t/p/w500${poster_path}`
                             : "https://placehold.co/600x400/1a1a1a/FFFFFF.png",
                     }}
                     className="w-full h-52 rounded-lg"

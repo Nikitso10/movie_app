@@ -1,22 +1,18 @@
 import { icons } from "@/constants/icons";
 import {View, Text, Image, ActivityIndicator, FlatList} from "react-native";
+import React from "react";
 
-import {images} from "@/constants/images";
-import React, {useEffect} from "react";
 import {useUser} from "@/services/useUser";
-import {useLocalSearchParams, useRouter} from "expo-router";
-
 import useFetch from "@/services/useFetch";
-
+import {images} from "@/constants/images";
 import SavedMovieCard from "@/components/SavedMovieCard";
 import {getSavedMovies} from "@/services/appwrite";
 
 const Saved = () => {
-    const { user, logout, authChecked } = useUser()
-    const router = useRouter();
+    const { user, authChecked } = useUser()
 
     console.log('Saved user is: ', user)
-    const query :string = user?.$id
+    const query :string = user!.$id
 
     const {
             data: savedmovies = [],
@@ -52,8 +48,8 @@ const Saved = () => {
                 contentContainerStyle={{ paddingBottom: 100 }}
                 ListHeaderComponent={
                     <>
-                        <View className="w-full flex-row justify-center mt-24 items-center">
-                            <Image source={icons.logo2} className="w-16 h-16 mb-4" />
+                        <View className="w-full flex-row justify-center mt-16 items-center">
+                            <Image source={images.movieflexlogo} className="w-16 h-16 mb-4" />
                         </View>
 
                         {loading && (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, ActivityIndicator, FlatList, Image } from "react-native";
-
+import { useLocalSearchParams } from "expo-router";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 
@@ -13,6 +13,11 @@ import MovieCard from "@/components/MovieCard";
 
 const Search = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const { q } = useLocalSearchParams<{ q: string }>();
+
+    if (q) {
+        setSearchQuery(q);
+    }
 
     const {
         data: movies = [],
@@ -70,13 +75,13 @@ const Search = () => {
                 contentContainerStyle={{ paddingBottom: 100 }}
                 ListHeaderComponent={
                     <>
-                        <View className="w-full flex-row justify-center mt-24 items-center">
-                            <Image source={icons.logo2} className="w-16 h-16 mb-4" />
+                        <View className="w-full flex-row justify-center mt-16 items-center">
+                            <Image source={images.movieflexlogo} className="w-16 h-16 mb-4" />
                         </View>
 
                         <View className="my-5">
                             <SearchBar
-                                placeholder="Search movies ..."
+                                placeholder={q!}
                                 value={searchQuery}
                                 onChangeText={(text: string) =>setSearchQuery(text)}
                             />

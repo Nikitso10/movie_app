@@ -59,17 +59,20 @@ const _Layout = () => {
                 height: "100%",
                 justifyContent: "center",
                 alignItems: "center",
+                alignContent: "center",
+
             },
             tabBarStyle: {
                 backgroundColor: "#0F0D23",
                 borderRadius: 50,
                 marginHorizontal: 20,
-                marginBottom: 36,
-                height: 52,
+                marginBottom: 20,
+                height: 56,
                 position: "absolute",
                 overflow: "hidden",
                 borderWidth: 1,
                 borderColor: "#0F0D23",
+                alignContent: "center",
             },
         }}>
             <Tabs.Screen

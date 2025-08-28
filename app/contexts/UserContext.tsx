@@ -1,6 +1,7 @@
 import {createContext, ReactNode, useEffect, useState} from "react"
 import {account} from "@/services/appwrite";
 import {ID, Models} from "react-native-appwrite";
+import {router} from "expo-router";
 
 
 // Define what the context provides
@@ -42,6 +43,7 @@ export function UserProvider({ children } : { children: ReactNode }) {
     async function logout() {
         await account.deleteSession("current")
         setUser(null)
+        router.replace("/");
     }
 
     async function getInitialUserValue() {

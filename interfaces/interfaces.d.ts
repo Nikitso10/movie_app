@@ -79,6 +79,6 @@ interface TrendingCardProps {
 interface SavedMovie {
     movie_id: string;
     title: string;
-    poster_url: string | null;
+    poster_path: string | null;
     user_id?: string;
 }

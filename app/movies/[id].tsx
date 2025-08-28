@@ -68,7 +68,7 @@ const MovieDetails = () => {
                 <View className="flex flex-row relative px-5 mt-5">
                     <Text className="items-start text-white font-bold text-xl ">{movie?.title}</Text>
 
-                    {movie && (
+                    {movie && user!==null && (
                         <LikeButton
                             query={user?.$id as string}
                             movie={{

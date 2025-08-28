@@ -7,10 +7,11 @@ interface Props {
     onPress?: () => void;
     value?: string;
     onChangeText?: (text: string) => void;
-
+    onSubmitEditing?: (e: any) => void
+    onFocus?: () => void;
 }
 
-const SearchBar = ({ placeholder, onPress, value, onChangeText} : Props) => {
+const SearchBar = ({ placeholder, onPress, value, onChangeText, onFocus, onSubmitEditing } : Props) => {
     return (
         <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4">
             <Image
@@ -20,6 +21,8 @@ const SearchBar = ({ placeholder, onPress, value, onChangeText} : Props) => {
                 tintColor="#AB8BFF"
             />
             <TextInput
+                onFocus={onFocus}
+                //onSubmitEditing={onPress}
                 onPress={onPress}
                 placeholder={placeholder}
                 value={value}

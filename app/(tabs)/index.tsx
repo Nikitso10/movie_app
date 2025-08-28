@@ -79,7 +79,7 @@ const Index = () => {
         <View className="flex-1 bg-primary">
             <Image
                 source={images.bg}
-                className="absolute w-full z-0"
+                className="absolute w-full justify-items-center grow z-0"
                 resizeMode="cover"
             />
 
@@ -89,9 +89,11 @@ const Index = () => {
                 contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
             >
 
-                <Image source={icons.logo2} className="w-16 h-16 mt-16 mb-5 mx-auto" />
+                <Image source={images.movieflexlogo} className="w-16 h-16 mt-16 mb-5 mx-auto" />
+                <View className="flex flex-row justify-end lg:pl-10 lg:mr-10">
+                    <SelectLink />
+                </View>
 
-                <SelectLink />
                 {/*<TouchableOpacity*/}
                 {/*    onPress={() => router.push("../login")} >*/}
                 {/*    <Text className="mx-auto text-white font-bold mt-5 mb-3">Go to Login</Text>*/}
@@ -108,9 +110,18 @@ const Index = () => {
                 ) : (
                     <View className="flex-1 mt-5">
                         <SearchBar
-                            onPress={() => {
-                                router.push("/search");
-                            }}
+                            // onPress={() => {
+                            //     router.push("/(tabs)/search");
+                            // }}
+                            onFocus={() => {
+                                router.push("/(tabs)/search");}}
+                            // onSubmitEditing={(e) => {
+                            //     const query = e.nativeEvent.text; // <- get entered value
+                            //     router.push({
+                            //         pathname: "/(tabs)/search",
+                            //         params: {q: query},
+                            //     });
+                            //}}
                             placeholder="Search for a movie"
                         />
 
@@ -147,12 +158,13 @@ const Index = () => {
                                 keyExtractor={(item) => item.id.toString()}
                                 numColumns={3}
                                 columnWrapperStyle={{
-                                    justifyContent: "flex-start",
+                                    justifyContent: "center",
                                     gap: 20,
                                     paddingRight: 5,
+                                    paddingLeft: 5,
                                     marginBottom: 10,
                                 }}
-                                className="mt-2 pb-32"
+                                className="mt-2 pb-32 "
                                 scrollEnabled={false}
                             />
                         </>

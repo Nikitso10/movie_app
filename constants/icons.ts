@@ -9,6 +9,7 @@ import arrow from "@/assets/icons/arrow.png";
 import heart from "@/assets/icons/heart.png";
 import heartbt from "@/assets/icons/heartbt.png";
 import logo2 from "@/assets/icons/logo2.png";
+import pen from "@/assets/icons/pen.png";
 
 
 export const icons = {
@@ -23,4 +24,5 @@ export const icons = {
   heart,
   heartbt,
   logo2,
+    pen,
 };

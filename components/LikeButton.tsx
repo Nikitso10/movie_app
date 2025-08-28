@@ -6,7 +6,6 @@ import ShowToast from "@/components/ShowToast";
 
 
 interface Props {
-    //initialLiked: boolean;
     onPress?: () => void;
     query: string;
     movie: SavedMovie;
