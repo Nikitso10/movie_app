@@ -44,6 +44,8 @@ const MovieDetails = () => {
             </SafeAreaView>
         );
     console.log( "Movie and user info:"+ movie?.id, user?.$id);
+
+
     return (
         <View className="bg-primary flex-1">
             <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -52,8 +54,8 @@ const MovieDetails = () => {
                         source={{
                             uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
                         }}
-                        className="w-full h-[550px]"
-                        resizeMode="stretch"
+                        className="w-full h-[550px] "
+                        resizeMode="center"
                     />
 
                     <TouchableOpacity className="absolute bottom-5 right-5 rounded-full size-14 bg-white flex items-center justify-center">
@@ -70,7 +72,7 @@ const MovieDetails = () => {
 
                     {movie && user!==null && (
                         <LikeButton
-                            query={user?.$id as string}
+                            query={user.$id as string}
                             movie={{
                                 movie_id: movie.id.toString(),
                                 title: movie.title,
@@ -107,7 +109,7 @@ const MovieDetails = () => {
                         value={movie?.genres?.map((g) => g.name).join(" • ") || "N/A"}
                     />
 
-                    <View className="flex flex-row justify-between w-1/2">
+                    <View className="flex flex-row justify-between w-1/2 ">
                         <MovieInfo
                             label="Budget"
                             value={`$${(movie?.budget ?? 0) / 1_000_000} million `}
@@ -119,19 +121,21 @@ const MovieDetails = () => {
                             )} million`}
                         />
                     </View>
+                    <View className="mb-20">
+                        <MovieInfo
+                            label="Production Companies"
+                            value={
+                                movie?.production_companies?.map((c) => c.name).join(" - ") ||
+                                "N/A"
+                            }
+                        />
+                    </View>
 
-                    <MovieInfo
-                        label="Production Companies"
-                        value={
-                            movie?.production_companies?.map((c) => c.name).join(" - ") ||
-                            "N/A"
-                        }
-                    />
                 </View>
             </ScrollView>
 
             <TouchableOpacity
-                className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50 "
+                className="absolute bottom-10 left-0 right-0 mx-5 bg-accent rounded-lg pt-3.5 pb-3 flex flex-row items-center justify-center z-50 "
                 onPress={router.back}
             >
                 <Image

@@ -1,4 +1,13 @@
-import {View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+    View,
+    Text,
+    Image,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Pressable, ScrollView
+} from 'react-native';
 import {icons} from "@/constants/icons";
 import {images} from "@/constants/images";
 import {useState} from "react";
@@ -14,15 +23,16 @@ const Login = () => {
     const handleSubmit = async () => {
         setError(null)
         try {
-            await login(email, password)
+            await login(email, password);
+            router.replace("/profile");
         } catch (error) {
             setError(error instanceof Error ? error.message : String(error))
         }
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View className="flex-1 bg-primary">
+        <ScrollView className="flex-1 bg-primary ">
+            <View >
                 <Image
                     source={images.bg}
                     className="absolute w-full z-0"
@@ -32,7 +42,7 @@ const Login = () => {
                     <View >
                         <Image source={images.movieflexlogo} className="w-16 h-16 mt-16 mb-5 mx-auto" />
                         <Text className="mt-10 text-center text-xl font-bold tracking-tight text-white">
-                            Sign in to your account
+                            Log in to your account
                         </Text>
                     </View>
                     <View className="mt-10 w-full max-w-sm self-center">
@@ -56,7 +66,7 @@ const Login = () => {
                         </View>
                         <TouchableOpacity className="w-full rounded-md bg-indigo-500 px-3 py-2"
                             onPress={handleSubmit} >
-                            <Text className="mx-auto text-white font-bold mt-5 mb-3">Login</Text>
+                            <Text className="mx-auto text-white font-bold mt-3 mb-3">Login</Text>
                         </TouchableOpacity>
                         <View className="mt-5">
                             {error && <Text className="mx-auto text-white mt-5 mb-3">{String(error)}</Text>}
@@ -66,16 +76,16 @@ const Login = () => {
                                 <Text className="mx-auto text-white font-bold mt-5 mb-3">Sign Up</Text>
                             </TouchableOpacity>
                         </View>
-                        <View className="mt-5">
+                        <View className="mt-3">
                            <TouchableOpacity
                                 onPress={() => router.push("/")} >
-                                <Text className="mx-auto text-white font-bold mt-5 mb-3">Home</Text>
+                                <Text className="mx-auto text-white font-bold mt-3 mb-3">Home</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </ScrollView>
     )
 }
 export default Login

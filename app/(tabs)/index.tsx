@@ -114,7 +114,7 @@ const Index = () => {
                             //     router.push("/(tabs)/search");
                             // }}
                             onFocus={() => {
-                                router.push("/(tabs)/search");}}
+                                router.push("../search");}}
                             // onSubmitEditing={(e) => {
                             //     const query = e.nativeEvent.text; // <- get entered value
                             //     router.push({

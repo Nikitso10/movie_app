@@ -1,4 +1,13 @@
-import {View, Text, Image, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+    View,
+    Text,
+    Image,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Pressable, ScrollView
+} from 'react-native';
 import {icons} from "@/constants/icons";
 import {images} from "@/constants/images";
 import {useState} from "react";
@@ -9,6 +18,7 @@ import {useUser} from "@/services/useUser";
 const SignUp = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [name, setName] = useState("");
     const [error, setError] = useState<string | null>(null);
     const { user, signUp } = useUser()
 
@@ -16,16 +26,19 @@ const SignUp = () => {
         setError(null)
 
         try {
-            await signUp(email, password)
+            await signUp(email, password, name)
             console.log('current user is: ', user)
         } catch (error) {
             setError(error instanceof Error ? error.message : String(error))
         }
+        if (!error) {
+            router.push("/")
+        }
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View className="flex-1 bg-primary">
+        <ScrollView className="flex-1 bg-primary">
+            <View >
                 <Image
                     source={images.bg}
                     className="absolute w-full z-0"
@@ -39,6 +52,15 @@ const SignUp = () => {
                         </Text>
                     </View>
                     <View className="mt-10 w-full max-w-sm self-center">
+                        <View className="mb-6">
+                            <TextInput className="mt-2 w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline outline-1 outline-white/10 focus:outline-2 focus:outline-indigo-500"
+                                       placeholder="Name"
+                                       value={name}
+                                       onChangeText={setName}
+                                       keyboardType="default"
+                                       placeholderTextColor="#0000ff"
+                            />
+                        </View>
                         <View className="mb-6">
                             <TextInput className="mt-2 w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline outline-1 outline-white/10 focus:outline-2 focus:outline-indigo-500"
                                        placeholder="Email"
@@ -73,7 +95,7 @@ const SignUp = () => {
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </ScrollView>
     )
 }
 export default SignUp

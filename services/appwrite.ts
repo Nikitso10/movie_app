@@ -78,11 +78,13 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
         console.log("results documentId is ", result);
         console.log("DB:", DATABASE_ID);
         console.log("Saved Collection:", SAVED_COLLECTION_ID);
+        console.log("User Saved :", userid, "MovieId is: ", savemovie.movie_id);
+        console.log("Saved posterpath is :", savemovie.poster_path);
 
-        if (result.documents.length === 0) {
-            console.log("No documents found to delete.");
-            return;
-        }
+        // if (result.documents.length === 0) {
+        //     console.log("No documents found to delete.");
+        //
+        // }
 
         // if already saved, delete -> Unlike
         if (result.documents.length > 0) {
@@ -97,9 +99,9 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
             console.log("delete args:", DATABASE_ID, SAVED_COLLECTION_ID, result.documents[0]?.$id);
 
             await database.deleteDocument(
-                '<DATABASE_ID>', // databaseId
-                '<SAVED_COLLECTION_ID>', // collectionId
-                docId // documentId
+                DATABASE_ID,
+                SAVED_COLLECTION_ID,
+                docId
             );
 
         }
@@ -109,7 +111,7 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
                 movie_id: savemovie.movie_id,
                 title: savemovie.title,
                 user_id: userid,
-                poster_url: `https://image.tmdb.org/t/p/w500${savemovie.poster_path}`,
+                poster_path: `https://image.tmdb.org/t/p/w500${savemovie.poster_path}`,
                 });
             }
         console.log("create document Id is ", ID);
@@ -119,68 +121,68 @@ export const updateSavedMovie = async (userid: string, savemovie: SavedMovie) =>
         }
     };
 
-    export const checkLikedMovie = async (userId: string, movieId: string) => {
-        try {
-            const result = await database.listDocuments(DATABASE_ID, SAVED_COLLECTION_ID, [
-                Query.equal('movie_id', movieId),
-                Query.equal('user_id', userId),
-            ]);
-            return result.documents.length > 0;
-        } catch (error) {
-            console.error('Error checking liked status:', error);
-            return false;
-        }
-    };
+export const checkLikedMovie = async (userId: string, movieId: string) => {
+    try {
+        const result = await database.listDocuments(DATABASE_ID, SAVED_COLLECTION_ID, [
+            Query.equal('movie_id', movieId),
+            Query.equal('user_id', userId),
+        ]);
+        return result.documents.length > 0;
+    } catch (error) {
+        console.error('Error checking liked status:', error);
+        return false;
+    }
+};
 
-    export const getSavedMovies = async (query: string): Promise<
-        SavedMovie[]
-    > => {
-        try {
-            const result = await database.listDocuments(DATABASE_ID, SAVED_COLLECTION_ID, [
-                Query.equal('user_id', query),
-            ]);
+export const getSavedMovies = async (query: string): Promise<
+    SavedMovie[]
+> => {
+    try {
+        const result = await database.listDocuments(DATABASE_ID, SAVED_COLLECTION_ID, [
+            Query.equal('user_id', query),
+        ]);
 
-            return result.documents as unknown as SavedMovie[];
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    };
+        return result.documents as unknown as SavedMovie[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
-    export const updateEmail = async ( email: string, password: string) => {
-        try {
-            const result = await account.updateEmail(
-                email, // email
-                password // password
-            );
-            return result;
-        } catch (error) {
-            console.error("Error updating email:", error);
-            throw error;
-        }
-    };
+export const updateEmail = async ( email: string, password: string) => {
+    try {
+        const result = await account.updateEmail(
+            email, // email
+            password // password
+        );
+        return result;
+    } catch (error) {
+        console.error("Error updating email:", error);
+        throw error;
+    }
+};
 
-    export const updatePassword = async ( newpass: string, oldpass?: string) => {
-        try {
-            const result = await account.updatePassword(
-                newpass, // password
-                oldpass // oldPassword (optional)
-            );
-            return result;
-        } catch (error) {
-            console.error("Error updating password:", error);
-            throw error;
-        }
-    };
+export const updatePassword = async ( newpass: string, oldpass?: string) => {
+    try {
+        const result = await account.updatePassword(
+            newpass, // password
+            oldpass // oldPassword (optional)
+        );
+        return result;
+    } catch (error) {
+        console.error("Error updating password:", error);
+        throw error;
+    }
+};
 
-    export const updateName = async ( newname: string) => {
-        try {
-            const result = await account.updateName(
-                newname // name
-            );
-            return result;
-        } catch (error) {
-            console.error("Error updating name:", error);
-            throw error;
-        }
-    };
+export const updateName = async ( newname: string) => {
+    try {
+        const result = await account.updateName(
+            newname // name
+        );
+        return result;
+    } catch (error) {
+        console.error("Error updating name:", error);
+        throw error;
+    }
+};

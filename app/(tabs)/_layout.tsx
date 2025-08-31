@@ -29,34 +29,40 @@ const TabIcon = ({ focused, icon, title } : any) => {
 
 const _Layout = () => {
 
+    function useLoggedIn() {
+        const { user, authChecked } = useUser();
 
-    function LoggedUser () {
-        const [loggedIn, setLoggedIn] = useState(false);
-        const {user, authChecked} = useUser();
-
-
-        useEffect(() => {
-
-            if (!authChecked && user == null) {
-                setLoggedIn(false)
-            }
-            if (authChecked && user !== null) {
-                setLoggedIn(true)
-            } else {
-                setLoggedIn(false)
-            }
-
-        }, [user, authChecked])
-
-        return loggedIn;
+        return authChecked && user !== null;
     }
+
+    const loggedIn = useLoggedIn();
+    // function LoggedUser () {
+    //     const [loggedIn, setLoggedIn] = useState(false);
+    //     const {user, authChecked} = useUser();
+
+    //
+    //     useEffect(() => {
+    //
+    //         if (!authChecked && user == null) {
+    //             setLoggedIn(false)
+    //         }
+    //         if (authChecked && user !== null) {
+    //             setLoggedIn(true)
+    //         } else {
+    //             setLoggedIn(false)
+    //         }
+    //
+    //     }, [user, authChecked])
+    //
+    //     return loggedIn;
+    // }
 
     return (
         <Tabs screenOptions={{
             tabBarShowLabel: false,
             tabBarItemStyle: {
                 width: "100%",
-                height: "100%",
+                height: "40%",
                 justifyContent: "center",
                 alignItems: "center",
                 alignContent: "center",
@@ -66,8 +72,8 @@ const _Layout = () => {
                 backgroundColor: "#0F0D23",
                 borderRadius: 50,
                 marginHorizontal: 20,
-                marginBottom: 20,
-                height: 56,
+                marginBottom: 35,
+                height: 50,
                 position: "absolute",
                 overflow: "hidden",
                 borderWidth: 1,
@@ -104,7 +110,7 @@ const _Layout = () => {
                     )
                 }}
             />
-            <Tabs.Protected guard={LoggedUser()}>
+            <Tabs.Protected guard={loggedIn}>
                 <Tabs.Screen
                     name="saved"
                     options={{

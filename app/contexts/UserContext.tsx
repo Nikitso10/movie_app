@@ -3,13 +3,12 @@ import {account} from "@/services/appwrite";
 import {ID, Models} from "react-native-appwrite";
 import {router} from "expo-router";
 
-
 // Define what the context provides
 interface UserContextType {
     user: Models.User<Models.Preferences> | null;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
-    signUp: (email: string, password: string) => Promise<void>;
+    signUp: (email: string, password: string, name: string) => Promise<void>;
     authChecked: boolean;
 }
 
@@ -31,9 +30,9 @@ export function UserProvider({ children } : { children: ReactNode }) {
         }
     }
 
-    async function signUp(email: string, password: string) {
+    async function signUp(email: string, password: string, name: string) {
         try {
-            await account.create(ID.unique(), email, password)
+            await account.create(ID.unique(), email, password, name)
             await login(email, password)
         } catch (error) {
             throw Error((error as Error).message)
@@ -41,9 +40,10 @@ export function UserProvider({ children } : { children: ReactNode }) {
     }
 
     async function logout() {
+        router.replace("/");
         await account.deleteSession("current")
         setUser(null)
-        router.replace("/");
+
     }
 
     async function getInitialUserValue() {

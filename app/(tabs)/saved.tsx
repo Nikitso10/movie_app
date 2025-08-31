@@ -1,15 +1,22 @@
-import { icons } from "@/constants/icons";
 import {View, Text, Image, ActivityIndicator, FlatList} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 
 import {useUser} from "@/services/useUser";
 import useFetch from "@/services/useFetch";
 import {images} from "@/constants/images";
 import SavedMovieCard from "@/components/SavedMovieCard";
 import {getSavedMovies} from "@/services/appwrite";
+import {router} from "expo-router";
 
 const Saved = () => {
     const { user, authChecked } = useUser()
+
+    useEffect(() => {
+        if (authChecked && !user) {
+            router.replace("../login");
+        }
+
+    }, [authChecked, user]);
 
     console.log('Saved user is: ', user)
     const query :string = user!.$id
@@ -71,7 +78,7 @@ const Saved = () => {
                             savedmovies?.length! > 0 && (
                                 <Text className="text-xl text-white font-bold">
                                     Your saved movies,
-                                    <Text className="text-accent"> {splitName }</Text>
+                                    <Text className="text-accent"> {!user?.name ? splitName : user.name}</Text>
                                 </Text>
                             )}
                     </>

@@ -24,7 +24,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (authChecked && !user) {
-            router.replace("/login");
+            router.replace("../login");
         }
         if (user!==null && authChecked) {
             setEmail(user.email || "");
@@ -58,7 +58,7 @@ const Profile = () => {
     };
 
     return (
-        <SafeAreaView className="bg-primary flex-1 px-10">
+        <SafeAreaView className="bg-primary flex-1 px-10 ">
             <View className="flex flex-row gap-5 py-4">
                 <LetteredAvatar />
                 <Text className="text-white mb-2">Hi, {name}</Text>
@@ -181,13 +181,15 @@ const Profile = () => {
                     <Text className="text-center text-white font-bold">Save Changes</Text>
                 </TouchableOpacity>
             )}
+            <View className="justify-center items-center">
+                <TouchableOpacity
+                    className="w-full rounded-md bg-indigo-500 max-w-sm px-3 py-1 gap-3 items-end "
+                    onPress={logout}
+                >
+                    <Text className="mx-auto text-white font-bold mt-1 mb-1 ">Log Out</Text>
+                </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-                className="w-full rounded-md bg-indigo-500 px-3 py-1 gap-3 items-end"
-                onPress={logout}
-            >
-                <Text className="mx-auto text-white font-bold mt-1 mb-1 ">Log Out</Text>
-            </TouchableOpacity>
         </SafeAreaView>
     );
 };

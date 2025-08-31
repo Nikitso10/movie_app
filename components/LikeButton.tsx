@@ -5,6 +5,7 @@ import {icons} from "@/constants/icons";
 import ShowToast from "@/components/ShowToast";
 
 
+
 interface Props {
     onPress?: () => void;
     query: string;
@@ -56,18 +57,18 @@ const LikeButton = ({ onPress, query, movie } : Props)=> {
 
     return (
         <TouchableOpacity
-            // onPress={() => {
-            //     toggleLike();
-            //     ShowToast("Saved movie ", movie?.title); }}
-            onPress={toggleLike}
-            disabled={loading} className="absolute right-5">
+            onPress={() => {
+                toggleLike();
+                ShowToast("Your choice was saved."); }}
+            //onPress={toggleLike}
+            disabled={loading} className="absolute right-1">
 
             {loading ? (
                 <ActivityIndicator color="#ff4444" />
             ) : (
                 <Image
                     source={liked ? icons.heart : icons.heartbt}
-                    className=" pr-5 mr-20 w-6 h-6 ml-1"
+                    className=" pr-5 mr-8 w-6 h-6 ml-1"
                     resizeMode="stretch"
                 />
             )}

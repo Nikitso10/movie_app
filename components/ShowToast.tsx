@@ -1,17 +1,10 @@
-import React, {useState} from 'react';
-import { ToastAndroid, View } from 'react-native';
+import { ToastAndroid } from 'react-native';
 
-// interface Props {
-//     message: string;
-//     title: string;
-// }
 
-const ShowToast = (message : string, title : string) => {
-
-    //const [toastText, setToastText] = useState(message);
+const ShowToast = (message : string) => {
 
     const myToast = () => {
-        ToastAndroid.show(message + title, ToastAndroid.LONG);
+        ToastAndroid.show(message, 2000);
     };
 
     return (
